@@ -16,4 +16,8 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compile group: 'org.infinispan', name: 'infinispan-core', version: '9.4.14.Final'
+	// https://mvnrepository.com/artifact/org.infinispan/infinispan-spring-boot-starter-embedded
+compile group: 'org.infinispan', name: 'infinispan-spring-boot-starter-embedded', version: '2.1.5.Final'
+	
 }
