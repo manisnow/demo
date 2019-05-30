@@ -18,6 +18,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compile group: 'org.infinispan', name: 'infinispan-core', version: '9.4.14.Final'
 	// https://mvnrepository.com/artifact/org.infinispan/infinispan-spring-boot-starter-embedded
-compile group: 'org.infinispan', name: 'infinispan-spring-boot-starter-embedded', version: '2.1.5.Final'
+//compile group: 'org.infinispan', name: 'infinispan-spring-boot-starter-embedded', version: '2.1.5.Final'
+// https://mvnrepository.com/artifact/org.infinispan/infinispan-spring-boot-starter-remote
+compile group: 'org.infinispan', name: 'infinispan-spring-boot-starter-remote', version: '2.0.0.Alpha1'
+
 	
 }

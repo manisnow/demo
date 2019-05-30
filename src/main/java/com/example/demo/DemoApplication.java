@@ -1,13 +1,9 @@
 package com.example.demo;
 
-import org.infinispan.configuration.cache.Configuration;
-import org.infinispan.configuration.cache.ConfigurationBuilder;
-import org.infinispan.eviction.EvictionStrategy;
-import org.infinispan.manager.DefaultCacheManager;
-import org.infinispan.spring.embedded.provider.SpringEmbeddedCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoApplication {
 
 	@Autowired
-	SpringEmbeddedCacheManager cacheManager;
+	CacheManager cacheManager;
+
+	@Autowired
+	CachePlayground cachePlayground;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
+
 	}
 
 	@RequestMapping("/")
@@ -32,16 +32,33 @@ public class DemoApplication {
 
 	@RequestMapping("/catch")
 	public String catchT() {
-		cacheManager.getCacheNames().iterator().forEachRemaining(c -> System.out.println(c));
-		return "Hello World";
+		cachePlayground.add("Infinispan", "Is cool!");
+		System.out.println(cachePlayground.getContent("Infinispan"));
+		return cachePlayground.getContent("Infinispan");
 	}
 
-	@Bean
-	public SpringEmbeddedCacheManager cacheManager() throws Exception {
-		Configuration config = new ConfigurationBuilder().eviction().strategy(EvictionStrategy.LRU).maxEntries(150)
-				.build();
+	/*
+	 * @Bean public SpringEmbeddedCacheManagerFactoryBean springCache() { return new
+	 * SpringEmbeddedCacheManagerFactoryBean(); }
+	 */
 
-		return new SpringEmbeddedCacheManager(new DefaultCacheManager(config));
+	@Bean
+	public CachePlayground playground() {
+		return new CachePlayground();
+	}
+
+	public static class CachePlayground {
+
+		@Autowired
+		private CacheManager cacheManager;
+
+		public void add(String key, String value) {
+			cacheManager.getCache("default").put(key, value);
+		}
+
+		public String getContent(String key) {
+			return cacheManager.getCache("default").get(key).get().toString();
+		}
 	}
 
 }
