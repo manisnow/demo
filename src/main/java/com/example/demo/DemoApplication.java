@@ -1,5 +1,9 @@
 package com.example.demo;
 
+import java.util.Properties;
+
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,9 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableCaching
 public class DemoApplication {
-
-	@Autowired
-	CacheManager cacheManager;
 
 	@Autowired
 	CachePlayground cachePlayground;
@@ -37,6 +38,14 @@ public class DemoApplication {
 		return cachePlayground.getContent("Infinispan");
 	}
 
+	@Bean
+	RemoteCacheManager remoteCacheManager() {
+
+		Properties properties = new Properties();
+		properties.setProperty(ConfigurationProperties.SERVER_LIST, "datagrid-app-hotrod.sbx-992325.svc:11333");
+
+		return new RemoteCacheManager(properties);
+	}
 	/*
 	 * @Bean public SpringEmbeddedCacheManagerFactoryBean springCache() { return new
 	 * SpringEmbeddedCacheManagerFactoryBean(); }
@@ -50,14 +59,14 @@ public class DemoApplication {
 	public static class CachePlayground {
 
 		@Autowired
-		private CacheManager cacheManager;
+		private RemoteCacheManager remoteCacheManager;
 
 		public void add(String key, String value) {
-			cacheManager.getCache("default").put(key, value);
+			remoteCacheManager.getCache("default").put(key, value);
 		}
 
 		public String getContent(String key) {
-			return cacheManager.getCache("default").get(key).get().toString();
+			return (String) remoteCacheManager.getCache("default").get(key);
 		}
 	}
 

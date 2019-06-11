@@ -16,11 +16,14 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	compile group: 'org.infinispan', name: 'infinispan-core', version: '9.4.14.Final'
-	// https://mvnrepository.com/artifact/org.infinispan/infinispan-spring-boot-starter-embedded
-//compile group: 'org.infinispan', name: 'infinispan-spring-boot-starter-embedded', version: '2.1.5.Final'
-// https://mvnrepository.com/artifact/org.infinispan/infinispan-spring-boot-starter-remote
-compile group: 'org.infinispan', name: 'infinispan-spring-boot-starter-remote', version: '2.0.0.Alpha1'
+	  implementation('org.infinispan:infinispan-embedded:8.5.0.Final-redhat-9') {
+       transitive = false
+    }
+
+// https://mvnrepository.com/artifact/org.infinispan/infinispan-client-hotrod
+compile group: 'org.infinispan', name: 'infinispan-client-hotrod', version: '8.2.11.Final'
+
+
 
 	
 }
