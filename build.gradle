@@ -16,9 +16,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	 // https://mvnrepository.com/artifact/org.infinispan/infinispan-embedded
-compile group: 'org.infinispan', name: 'infinispan-embedded', version: '8.2.11.Final'
-
+	 
 
 // https://mvnrepository.com/artifact/org.infinispan/infinispan-client-hotrod
 compile group: 'org.infinispan', name: 'infinispan-client-hotrod', version: '8.2.11.Final'
