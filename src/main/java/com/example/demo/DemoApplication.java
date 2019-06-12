@@ -7,9 +7,11 @@ import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +38,18 @@ public class DemoApplication {
 		cachePlayground.add("Infinispan", "Is cool!");
 		System.out.println(cachePlayground.getContent("Infinispan"));
 		return cachePlayground.getContent("Infinispan");
+	}
+
+	@PutMapping("/rest/{key}/{value}")
+	public String catchT(@PathVariable("key") String key, @PathVariable("value") String value) {
+		cachePlayground.add(key, value);
+		return "Sucess";
+	}
+
+	@GetMapping("/rest/{key}")
+	public String catchTGet(@PathVariable("key") String key) {
+
+		return cachePlayground.getContent(key);
 	}
 
 	@Bean
