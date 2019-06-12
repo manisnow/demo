@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 import org.infinispan.client.hotrod.RemoteCacheManager;
@@ -47,9 +49,9 @@ public class DemoApplication {
 	}
 
 	@GetMapping("/rest/{key}")
-	public String catchTGet(@PathVariable("key") String key) {
-
-		return cachePlayground.getContent(key);
+	public String catchTGet(@PathVariable("key") String key) throws UnknownHostException {
+		String serveBy = InetAddress.getLocalHost().getHostName();
+		return serveBy + " : " + cachePlayground.getContent(key);
 	}
 
 	@Bean
